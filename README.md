@@ -35,7 +35,9 @@ ctci-studies
 │       │    problem2.java
 │       │   ...
 ```
+## Commits Structure
+Every commit should contain the name of the chapter, problem number and problem name along with your name within parentheses e.g. Trees and Graphs 4.4 - Check Balanced (Knevari)
 
 ## Plan Study
-
 Every student will be given 1 week for each data structures and algorithms chapter. We should update this Github repo after every problem we solve as a way to document our progress. After every chapter end, we shall pick a medium/hard Leetcode problem of the same ds/algorithm category we studied and try to solve on our own without assistance. Good luck!
+
