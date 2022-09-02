@@ -10,8 +10,9 @@ for keeping count of things and positions we can reference later in little to no
 
 According to the book Clean Code, functions should have one and only one reason to exist, they should perform one single task
 and be very good at it. Even though I'm not following every single guideline of the book in this repo, I find it more intuitive
-to have functions that modify the input return the given input anyway, even if passed by reference. It serves the purpose of a function
-monoid that operates on a single value.
+to have functions that modify the input to return the given input anyway, even if passed by reference. It serves the purpose of a function
+monoid that operates on a single value, returning it's value reinforces it's meaning for the reader, the meaning of a function that operates on that value
+and returns it's modification.
 
 ## Analyzing Average Time Complexity
 
