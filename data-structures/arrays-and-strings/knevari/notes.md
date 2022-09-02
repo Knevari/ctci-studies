@@ -6,6 +6,13 @@ in my mind. It feels like most problems in this chapter were focused on showing 
 to move things around arrays, strings and matrices. It has also shown that hash tables are often very useful
 for keeping count of things and positions we can reference later in little to no overhead because of constant time access.
 
+# About in-place algorithms
+
+According to the book Clean Code, functions should have one and only one reason to exist, they should perform one single task
+and be very good at it. Even though I'm not following every single guideline of the book in this repo, I find it more intuitive
+to have functions that modify the input return the given input anyway, even if passed by reference. It serves the purpose of a function
+monoid that operates on a single value.
+
 ## Analyzing Average Time Complexity
 
 ### Arrays
