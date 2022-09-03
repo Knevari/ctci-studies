@@ -85,6 +85,21 @@ class ArrayList:
     def __str__(self):
         return str(self.array[:self.size])
 
+    def __len__(self):
+        return self.size
+
+    def __iter__(self):
+        self.iteration = 0
+        return self
+
+    def __next__(self):
+        if self.iteration < self.size:
+            next_val = self.array[self.iteration]
+            self.iteration += 1
+            return next_val
+        else:
+            raise StopIteration
+
 
 def main():
     # Test my ArrayList
@@ -94,7 +109,6 @@ def main():
     arrList.prepend(4)
     arrList.append(7)
     arrList.append(2)
-    arrList.append("a")
 
     print("""\n
       - ArrayList
@@ -103,10 +117,9 @@ def main():
         Final Capacity: {}
         Final Readable Values: {}
         Entire Thing: {}
-
         Was able to search for value: {}
     """.format(
-        arrList.size,
+        len(arrList),
         arrList.capacity,
         str(arrList),
         str(arrList.array),
