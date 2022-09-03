@@ -21,7 +21,7 @@ class ArrayList:
     def _shiftElementsByAmount(self, amount):
         for idx in range(self.size-1, -1, -1):
             self.array[idx + amount] = self.array[idx]
-            self.array[idx] = 0
+            self.array[idx] = self.type()
 
     def _allocateEmptyArrayIfNone(self):
         if not hasattr(self, 'array'):
@@ -31,7 +31,7 @@ class ArrayList:
         self._allocateEmptyArrayIfNone()
 
         # Create new array
-        new_array = [0 for _ in range(self.capacity)]
+        new_array = [self.type() for _ in range(self.capacity)]
 
         # Copy old values to new array
         for idx, value in enumerate(self.array):
