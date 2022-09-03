@@ -14,7 +14,7 @@ that has a default ArrayList behavior for all it's lists and no manual memory ma
 I expect my ArrayList behavior to be the following:
 
 ```
-arr = ArrayList(20)
+arr = ArrayList(int, 20)
 
 arr.append(2) # adds to the end of the arraylist
 arr.prepend(10) # adds to the beginning of the arraylist
