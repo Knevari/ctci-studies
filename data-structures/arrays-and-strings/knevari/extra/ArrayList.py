@@ -58,6 +58,10 @@ class ArrayList:
         self._increaseInternalCapacityWhileNotEnoughSpace(amount)
         self._shiftElementsByAmount(amount)
 
+    def _insertAtFirstPosition(self, value):
+        self._shift(1)
+        self.array[0] = value
+
     # Public shit
     def is_empty(self):
         return self.size == 0
@@ -72,15 +76,13 @@ class ArrayList:
         self.array[self.size-1] = value
 
     def prepend(self, value):
+        if self.is_empty():
+            return self.append(value)
+
         self._validateValueType(value)
         self._increaseInternalCapacityIfNotEnoughSpace()
         self._incrementSize()
-
-        if self.size == 0:
-            self.append(value)
-        else:
-            self._shift(1)
-            self.array[0] = value
+        self._insertAtFirstPosition(value)
 
     def __str__(self):
         return str(self.array[:self.size])
