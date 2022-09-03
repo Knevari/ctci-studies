@@ -1,3 +1,4 @@
+// 1.1 isUnique
 public class OnePointOne{
     public static boolean isUnique(String x){
         if(x.length() > 256){
