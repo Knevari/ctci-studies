@@ -39,7 +39,7 @@ class LinkedList:
     def _createStringRepresentation(self):
         s = []
         for val in self:
-            s.append(val)
+            s.append(str(val))
         return ", ".join(s)
 
     # Public methods
@@ -53,6 +53,10 @@ class LinkedList:
             return self._insertNewHead(new_node)
 
         self._insertNewTail(new_node)
+
+    def insertMany(self, *values):
+        for value in values:
+            self.insert(value)
 
     def delete(self, value):
         if self.head.value == value:
