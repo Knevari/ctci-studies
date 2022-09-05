@@ -14,7 +14,7 @@ class Solution:
 
         for i in range(M):
             for j in range(N):
-                if i in rows_to_wipe or j in rows_to_wipe:
+                if i in rows_to_wipe or j in cols_to_wipe:
                     matrix[i][j] = 0
 
         return matrix
