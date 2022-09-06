@@ -62,7 +62,7 @@ class PriorityQueue:
         self._heap[node_idx].increasePriority()
 
     def _compareNodesKeys(self, node_idx, key):
-        self._heap[node_idx].key == key
+        return self._heap[node_idx].key == key
 
     def _swapNodes(self, first_node_idx, second_node_idx):
         self._heap[first_node_idx], self._heap[second_node_idx] =\
@@ -71,17 +71,22 @@ class PriorityQueue:
     def _popLastElement(self):
         self._heap.pop(self.size - 1)
 
-    def _heapify(self, idx):
-        largest = idx
+    def _findLargestSubtreeNode(self, tree_root_index):
+        largest = tree_root_index
 
-        left = self._getLeftChildIndex(idx)
-        right = self._getRightChildIndex(idx)
+        left = self._getLeftChildIndex(tree_root_index)
+        right = self._getRightChildIndex(tree_root_index)
 
-        if left < self.size and self._getNodePriority(idx) < self._getNodePriority(left):
+        if left < self.size and self._getNodePriority(tree_root_index) < self._getNodePriority(left):
             largest = left
 
         if right < self.size and self._getNodePriority(largest) < self._getNodePriority(right):
             largest = right
+
+        return largest
+
+    def _heapify(self, idx):
+        largest = self._findLargestSubtreeNode(idx)
 
         if largest != idx:
             self._swapNodes(largest, idx)
@@ -199,9 +204,7 @@ def main():
     h.set(1, 16)
     h.set(1, 17)
     # h.delete(1)
-    print(h._buckets)
-    print(h._size)
-    print(h.get("a"), h.get(1))
+    print(h.get("a"))
 
 
 if __name__ == "__main__":
