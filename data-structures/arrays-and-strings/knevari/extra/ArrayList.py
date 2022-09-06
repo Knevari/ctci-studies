@@ -94,6 +94,12 @@ class ArrayList:
         self.iteration = 0
         return self
 
+    def __getitem__(self, idx):
+        return self.array[idx]
+
+    def __setitem__(self, idx, value):
+        self.array[idx] = value
+
     def __next__(self):
         if self.iteration < self.size:
             next_val = self.array[self.iteration]
