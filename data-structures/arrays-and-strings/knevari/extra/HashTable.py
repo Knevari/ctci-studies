@@ -1,4 +1,5 @@
 from hashlib import sha256
+import queue
 
 # Variables and methods starting with a single _
 # are intended to be "private"
@@ -9,7 +10,7 @@ class QueueItem:
         self.key = key
         self.value = value
         self.priority = priority
-        self._max_priority = 2 ** 6
+        self._max_priority = 2 ** 5
 
     def increasePriority(self):
         self.priority = min(self._max_priority, self.priority + 1)
@@ -101,6 +102,10 @@ class PriorityQueue:
     def _appendToHeap(self, key, value):
         self._heap.append(QueueItem(key, value, self._starting_items_priority))
 
+    def _recalculateNodesPositions(self):
+        for idx in range((self.size // 2) - 1, -1, -1):
+            self._heapify(idx)
+
     # Public Stuff
     def insert(self, key, value):
         if self.size == 0:
@@ -110,10 +115,6 @@ class PriorityQueue:
             self._recalculateNodesPositions()
 
         self._incrementSize()
-
-    def _recalculateNodesPositions(self):
-        for idx in range((self.size // 2) - 1, -1, -1):
-            self._heapify(idx)
 
     def update(self, key, value):
         for idx in range(self.size):
@@ -134,6 +135,12 @@ class PriorityQueue:
             self._decrementSize()
             self._recalculateNodesPositions()
 
+    def is_empty(self):
+        return self.size == 0
+
+    def get_queue_as_list(self):
+        return self._heap
+
     def __iter__(self):
         return iter(self._heap)
 
@@ -142,15 +149,34 @@ class PriorityQueue:
 
 
 class HashTable:
-    def __init__(self, initial_size=1, growing_limit=100, increasing_factor=2):
+    def __init__(self, initial_capacity=1, growing_limit=2, increasing_factor=2):
         self._size = 0
-        self._capacity = initial_size
+        self._capacity = initial_capacity
         self._increasing_factor = increasing_factor
         self._growing_limit = growing_limit
         self._createBuckets()
 
+    # Private Stuff
     def _createBuckets(self):
         self._buckets = [PriorityQueue() for _ in range(self._capacity)]
+
+    def _findBucketByKey(self, key):
+        hash = self._hash(key)
+        return self._buckets[hash]
+
+    def _findItemInBucketByKey(self, bucket, key):
+        for item in bucket:
+            if item.key == key:
+                return item
+
+        return None
+
+    def _findValueInBucketByKey(self, bucket, key):
+        for item in bucket:
+            if item.key == key:
+                return item.value
+
+        return None
 
     def _hash(self, value):
         data = repr(value).encode("utf-8")
@@ -159,52 +185,87 @@ class HashTable:
     def _incrementSize(self):
         self._size += 1
 
+    def _decrementSize(self):
+        self._size -= 1
+
+    def _increaseGrowingLimit(self):
+        self._growing_limit *= self._increasing_factor
+
+    def _increaseInternalCapacity(self):
+        self._capacity *= self._increasing_factor
+        self._increaseGrowingLimit()
+
+    def _checkIfNeedsToReallocate(self):
+        if self._size > self._growing_limit:
+            self._increaseInternalCapacity()
+            self._reallocateBucketsInternalArray()
+
+    def _reallocateBucketsInternalArray(self):
+        old_buckets = self._buckets
+        new_buckets = [PriorityQueue() for _ in range(self._capacity)]
+        self._buckets = new_buckets
+
+        for queue in old_buckets:
+            if queue.is_empty():
+                continue
+            for item in queue.get_queue_as_list():
+                bucket = self._findBucketByKey(item.key)
+                bucket.insert(item.key, item.value)
+
+    # Public Stuff
     def set(self, key, value):
-        hash = self._hash(key)
+        bucket = self._findBucketByKey(key)
 
         if self.has(key):
-            self._buckets[hash].update(key, value)
+            bucket.update(key, value)
         else:
-            self._buckets[hash].insert(key, value)
+            bucket.insert(key, value)
             self._incrementSize()
 
+        self._checkIfNeedsToReallocate()
+
     def get(self, key):
-        hash = self._hash(key)
+        bucket = self._findBucketByKey(key)
+        item = self._findItemInBucketByKey(bucket, key)
 
-        bucket = self._buckets[hash]
-
-        for item in bucket:
-            if item.key == key:
-                return item.value
+        if item:
+            item.increasePriority()
+            return item.value
 
         return None
 
     def has(self, key):
-        hash = self._hash(key)
+        bucket = self._findBucketByKey(key)
 
-        bucket = self._buckets[hash]
-
-        for item in bucket:
-            if item.key == key:
-                return True
+        if self._findValueInBucketByKey(bucket, key) != None:
+            return True
 
         return False
 
     def delete(self, key):
-        hash = self._hash(key)
-        bucket = self._buckets[hash]
+        bucket = self._findBucketByKey(key)
         bucket.remove(key)
+        self._decrementSize()
 
 
 def main():
     h = HashTable()
-    h.set("a", "b")
-    h.set("a", 13)
-    h.set(1, 15)
-    h.set(1, 16)
-    h.set(1, 17)
-    # h.delete(1)
-    print(h.get("a"))
+
+    h.set(1, 13)
+    h.set(2, 14)
+    h.set(3, 15)
+    h.delete(2)
+
+    print(h.has(2))  # False
+    print(h.has(1))  # True
+    print(h.get(1))  # 13
+
+    h.set(2, 22)
+
+    print(h.has(2))  # True
+    print(h.get(2))  # 22
+
+    print(h._buckets)
 
 
 if __name__ == "__main__":
