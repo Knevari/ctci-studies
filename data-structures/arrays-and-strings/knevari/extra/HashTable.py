@@ -123,7 +123,7 @@ class PriorityQueue:
                 self._recalculateNodesPositions()
                 return True
 
-            return False
+        return False
 
     def remove(self, key):
         idx = self._findNodeByKey(key)
