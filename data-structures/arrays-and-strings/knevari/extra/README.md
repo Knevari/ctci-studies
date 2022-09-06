@@ -80,3 +80,7 @@ table.has(key) # returns True if value is present, False otherwise
 
 table.delete(key) # deletes a given key from the table
 ```
+
+#### Post-implementation
+
+It was quite a challenge to develop this data structure using the approach described above, at first I had to figure a way to order
