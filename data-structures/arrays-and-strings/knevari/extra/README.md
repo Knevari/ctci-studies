@@ -66,7 +66,7 @@ Hash table is going to be my second choice, since it's the holy grail of all dat
 
 The main difference between CTCI Hash Table example and my construction is that mine is going to use a priority queue instead of a linked list as a bucket, I want it to be able to reposition all collisions in a manner that puts elements with higher frequency of use in front of less important ones, so it minimizes the access time.
 
-One of the biggest problems when building a dynamically sized hash table is the need to recompute all indexes on the event of the access time growing too big in order to maintain the amortized O(1) access time.
+One of the biggest problems when building a dynamically sized hash table is the need to recompute all indexes on the event of the access time growing too big in order to maintain the amortized O(1) access time. Thinking about a way to reduce the number of times I need to reallocate the lookup array, I came up with two ideas. The first one keeps track of the general number of elements currently saved in the lookup array within all buckets, and reallocates if it grows past a certain threshold. The second one takes into account only the buckets which are most active and tries to decide based on that whether we should increase the size to move some items to other buckets.
 
 I expect my HashTable behavior to be the following
 
