@@ -189,12 +189,8 @@ class HashTable:
     def _decrementSize(self):
         self._size -= 1
 
-    def _increaseGrowingLimit(self):
-        self._max_load_factor *= self._increasing_factor
-
     def _increaseInternalNumberOfBuckets(self):
         self._number_of_buckets *= self._increasing_factor
-        self._increaseGrowingLimit()
 
     def _checkIfNeedsToReallocate(self):
         if self._getLoadFactor() > self._max_load_factor:
