@@ -149,16 +149,17 @@ class PriorityQueue:
 
 
 class HashTable:
-    def __init__(self, initial_capacity=200, growing_limit=1000, increasing_factor=2):
+    def __init__(self, initial_number_of_buckets=200, max_load_factor=0.6, increasing_factor=2):
         self._size = 0
-        self._capacity = initial_capacity
+        self._number_of_buckets = initial_number_of_buckets
         self._increasing_factor = increasing_factor
-        self._growing_limit = growing_limit
+        self._max_load_factor = max_load_factor
         self._createBuckets()
 
     # Private Stuff
     def _createBuckets(self):
-        self._buckets = [PriorityQueue() for _ in range(self._capacity)]
+        self._buckets = [PriorityQueue()
+                         for _ in range(self._number_of_buckets)]
 
     def _findBucketByKey(self, key):
         hash = self._hash(key)
@@ -180,7 +181,7 @@ class HashTable:
 
     def _hash(self, value):
         data = repr(value).encode("utf-8")
-        return int.from_bytes(sha256(data).digest(), "big") % self._capacity
+        return int.from_bytes(sha256(data).digest(), "big") % self._number_of_buckets
 
     def _incrementSize(self):
         self._size += 1
@@ -189,20 +190,20 @@ class HashTable:
         self._size -= 1
 
     def _increaseGrowingLimit(self):
-        self._growing_limit *= self._increasing_factor
+        self._max_load_factor *= self._increasing_factor
 
-    def _increaseInternalCapacity(self):
-        self._capacity *= self._increasing_factor
+    def _increaseInternalNumberOfBuckets(self):
+        self._number_of_buckets *= self._increasing_factor
         self._increaseGrowingLimit()
 
     def _checkIfNeedsToReallocate(self):
-        if self._size > self._growing_limit:
-            self._increaseInternalCapacity()
+        if self._getLoadFactor() > self._max_load_factor:
+            self._increaseInternalNumberOfBuckets()
             self._reallocateBucketsInternalArray()
 
     def _reallocateBucketsInternalArray(self):
         old_buckets = self._buckets
-        new_buckets = [PriorityQueue() for _ in range(self._capacity)]
+        new_buckets = [PriorityQueue() for _ in range(self._number_of_buckets)]
         self._buckets = new_buckets
 
         for queue in old_buckets:
@@ -211,6 +212,9 @@ class HashTable:
             for item in queue.get_queue_as_list():
                 bucket = self._findBucketByKey(item.key)
                 bucket.insert(item.key, item.value)
+
+    def _getLoadFactor(self):
+        return self._size / self._number_of_buckets
 
     # Public Stuff
     def set(self, key, value):
@@ -265,7 +269,15 @@ def main():
     print(h.has(2))  # True
     print(h.get(2))  # 22
 
-    print(h._buckets)
+    print(h._getLoadFactor())
+
+    h.set(9, 12)
+    h.set(10, 12)
+    h.set(24, 13)
+    h.set(50, 22)
+
+    print(h._getLoadFactor())
+    # print(h._buckets)
 
 
 if __name__ == "__main__":
