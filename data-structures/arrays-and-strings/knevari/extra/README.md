@@ -1,6 +1,6 @@
 # Chapter 1 Data Structures Implementations
 
-In this first chapter it is said that a good exercise is to create our own implementations of StringBuilder,
+In the first chapter it is said that it's a good exercise to create our own implementations of StringBuilder,
 HashTable and ArrayList, since I found it quite interesting to understand how all these data structures work underneath,
 I'm gonna give it a try.
 
