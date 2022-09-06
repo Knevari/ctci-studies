@@ -194,10 +194,6 @@ class HashTable:
 
 
 def main():
-    pass
-
-
-if __name__ == "__main__":
     h = HashTable()
     h.set("a", "b")
     h.set("a", 13)
@@ -208,3 +204,7 @@ if __name__ == "__main__":
     print(h._buckets)
     print(h._size)
     print(h.get("a"), h.get(1))
+
+
+if __name__ == "__main__":
+    main()
