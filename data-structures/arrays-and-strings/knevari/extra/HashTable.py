@@ -1,5 +1,4 @@
 from hashlib import sha256
-from queue import PriorityQueue
 
 # Variables and methods starting with a single _
 # are intended to be "private"
