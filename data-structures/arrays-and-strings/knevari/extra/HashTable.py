@@ -149,7 +149,7 @@ class PriorityQueue:
 
 
 class HashTable:
-    def __init__(self, initial_capacity=1, growing_limit=2, increasing_factor=2):
+    def __init__(self, initial_capacity=200, growing_limit=1000, increasing_factor=2):
         self._size = 0
         self._capacity = initial_capacity
         self._increasing_factor = increasing_factor
