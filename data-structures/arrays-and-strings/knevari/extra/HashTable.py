@@ -144,7 +144,6 @@ class HashTable:
         self._growing_limit = growing_limit
         self._createBuckets()
 
-    # Private Stuff
     def _createBuckets(self):
         self._buckets = [PriorityQueue() for _ in range(self._capacity)]
 
@@ -155,7 +154,6 @@ class HashTable:
     def _incrementSize(self):
         self._size += 1
 
-    # Public Stuff
     def set(self, key, value):
         hash = self._hash(key)
 
