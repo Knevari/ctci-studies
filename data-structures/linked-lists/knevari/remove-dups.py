@@ -3,10 +3,6 @@ from LinkedList import LinkedList
 
 class Solution:
     def remove_dups(self, ll: LinkedList) -> LinkedList:
-        """
-        This algorithm requires 2 passes through the linked list,
-        since we need to know at least the positions of each element to remove
-        """
         if ll.is_empty():
             return ll
 
