@@ -26,13 +26,6 @@ class LinkedList:
             self.tail.next = node
             self.tail = node
 
-    def _deleteHead(self):
-        if self._headEqualsTail():
-            self.head = None
-            self.tail = None
-        else:
-            self.head = self.head.next
-
     def _updateReferenceToNextNode(self, node: Node):
         node.next = node.next.next
 
@@ -46,6 +39,15 @@ class LinkedList:
     def is_empty(self):
         return self.head == None and self.tail == None
 
+    def insert_head(self, value: any):
+        new_node = Node(value)
+
+        if self.is_empty():
+            return self._insertNewHead(new_node)
+
+        new_node.next = self.head
+        self.head = new_node
+
     def insert(self, value: any):
         new_node = Node(value)
 
@@ -54,13 +56,13 @@ class LinkedList:
 
         self._insertNewTail(new_node)
 
-    def insertMany(self, *values):
+    def insert_many(self, *values):
         for value in values:
             self.insert(value)
 
     def delete(self, value):
         if self.head.value == value:
-            self._deleteHead()
+            self.delete_head()
 
         node = self.head
 
@@ -70,6 +72,13 @@ class LinkedList:
                 return
             else:
                 node = node.next
+
+    def delete_head(self):
+        if self._headEqualsTail():
+            self.head = None
+            self.tail = None
+        else:
+            self.head = self.head.next
 
     # Magic Methods
     def __iter__(self):
