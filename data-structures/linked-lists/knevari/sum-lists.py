@@ -30,6 +30,9 @@ class Solution:
             n1 = n1.next
             n2 = n2.next
 
+        if n1 == None and n2 == None and carry > 0:
+            result.insert(carry)
+
         while n1 != None:
             result.insert(n1.value + carry)
             carry = 0
@@ -49,14 +52,10 @@ def main():
     n1 = LinkedList()
     n2 = LinkedList()
     n1.insert_many(0, 0, 0, 1)
-    n2.insert_many(0, 0, 0, 0, 0, 0, 2)
+    n2.insert_many(0, 0, 0, 0, 2)
 
     print(solution.sum_lists(n1, n2))
 
 
 if __name__ == "__main__":
     main()
-
-617 + 295
-
-12
